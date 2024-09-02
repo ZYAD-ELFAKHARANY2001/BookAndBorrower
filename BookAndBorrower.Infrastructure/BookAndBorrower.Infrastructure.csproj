@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookAndBorrower.Application\BookAndBorrower.Application.csproj" />
+    <ProjectReference Include="..\BookAndBorrower.Context\BookAndBorrower.Context.csproj" />
+  </ItemGroup>
+
+</Project>

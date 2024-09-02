@@ -1,0 +1,110 @@
+﻿@model IEnumerable<BookAndBorrower.DTOs.Book.GetAllBooks>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Borrow" asp-controller="Book" asp-route-bookId="1" class="btn btn-info">Borrow Book</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfCopies)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BorrowedBooks)
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookImage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfCopies)
+            </td>
+            <td>
+                <p>
+                    <a href="#" onclick="borrowBook(@item.Id)" class="btn btn-info">Borrow Book</a>
+                </p>
+                <p>
+                    <a href="#" onclick="returnBook(@item.Id)" class="btn btn-info">Borrow Back</a>
+                </p>
+              
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+<script>
+    function borrowBook(bookId) {
+
+        $.ajax({
+            url: '@Url.Action("Borrow", "Book")',
+            type: 'POST',
+            data: {
+                bookId: bookId
+            },
+            success: function () {
+               
+                    window.location.href = '@Url.Action("Index", "Book")';
+                
+                    //alert(result.message);
+                
+            },
+            error: function (xhr, status, error) {
+                alert('Error: ' + xhr.responseText);
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+                console.log('bookId:', bookId);
+                console.log('Anti-Forgery Token:', token);
+            }
+        });
+    }
+    function returnBook(bookId) {
+
+        $.ajax({
+            url: '@Url.Action("BorrowBack", "Book")',
+            type: 'POST',
+            data: {
+                bookId: bookId
+            },
+            success: function (result) {
+                if (result.success) {
+                    window.location.href = '@Url.Action("Index", "Book")';
+                }
+                else { alert(result.message); }
+               
+
+            },
+            error: function (xhr, status, error) {
+                alert('Error: ' + xhr.responseText);
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+                console.log('bookId:', bookId);
+                console.log('Anti-Forgery Token:', token);
+            }
+        });
+    }
+</script>
